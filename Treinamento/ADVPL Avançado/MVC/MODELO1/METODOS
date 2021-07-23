@@ -1,0 +1,55 @@
+
+
+/***************************
+
+Metodos do Browse
+
+****************************/
+
+ 
+    Método responsável por adicionar legenda no browser
+
+    oBrowse:AddLegend("A1_COD == '00001'  " , "GREEN"   , "Em aberto")
+    oBrowse:AddLegend("A1_COD == '000229' " , "BLUE"   , "Baixado Parcialmente")
+    oBrowse:AddLegend("A1_COD == '000045' " , "RED" , "Baixado")
+
+
+    Método responsável por realizar filtro no browse
+
+    oBrowse:SetFilterDefault("SA1->A1_COD == '000045'")
+
+
+
+/**************************************************
+
+Metodos do MODEL
+
+***************************************************/
+
+Deixar o campo como obrigatório
+oStZZZ:SetProperty("ZZZ_COD", MODEL_FIELD_OBRIGAT,.F.)
+
+
+Criar um inicializado padrão
+oStSA1:SetProperty("A1_COD", MODEL_FIELD_INIT, {|| GetSxeNum('SA1','A1_COD')})
+
+
+Modo de edição do campo
+oStSA1:SetProperty("A1_COD", MODEL_FIELD_WHEN,{|| .F.})
+
+
+Criando um gatilho 
+aAuxGat := FwStruTrigger("A1_COD", "A1_NOME", 'M->A1_COD',.F.,NIL,NIL,NIL)
+oStSA1:AddTrigger(aAuxGat[1],aAuxGat[2],aAuxGat[3],aAuxGat[4])
+
+
+
+/***************************
+
+Metodos do ViewDef
+
+****************************/
+
+    oStZZZ:SetProperty('ZZZ_NOME', MVC_VIEW_CANCHANGE, .F.)
+    oStZZZ:RemoveField('ZZZ_DEPEND')
+    
